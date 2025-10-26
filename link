@@ -1,0 +1,149 @@
+<?php
+// ====== DATA PROFIL (boleh ubah ikut diri anda) ======
+$profile = [
+    "name" => "Nama Anda",
+    "job" => "Web Developer",
+    "about" => "Saya seorang pembangun web yang berminat dengan teknologi moden, PHP, dan reka bentuk responsif.",
+    "email" => "anda@example.com",
+    "phone" => "+60 12-3456789",
+    "skills" => ["HTML", "CSS", "PHP", "JavaScript", "MySQL"]
+];
+
+// ====== LOGIK BORANG HUBUNGI ======
+$messageSent = false;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = htmlspecialchars($_POST["name"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $message = htmlspecialchars($_POST["message"]);
+
+    // Boleh gantikan bahagian ini untuk simpan ke DB atau hantar email sebenar
+    $messageSent = true;
+}
+?>
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $profile['name']; ?> - Portfolio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+        }
+        .skills ul {
+            list-style: none;
+            padding: 0;
+        }
+        .skills li {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form input, form textarea {
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        form button:hover {
+            background: #0056b3;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #f1f1f1;
+            color: #555;
+        }
+        .message-box {
+            background: #e7f9ee;
+            border: 1px solid #90ee90;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+            color: #2b6b2b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><?php echo $profile['name']; ?></h1>
+        <p><?php echo $profile['job']; ?></p>
+    </header>
+
+    <section class="about">
+        <h2>Tentang Saya</h2>
+        <p><?php echo $profile['about']; ?></p>
+    </section>
+
+    <section class="skills">
+        <h2>Kemahiran</h2>
+        <ul>
+            <?php foreach ($profile['skills'] as $skill): ?>
+                <li><?php echo $skill; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </section>
+
+    <section class="contact">
+        <h2>Hubungi Saya</h2>
+        <p>Email: <a href="mailto:<?php echo $profile['email']; ?>"><?php echo $profile['email']; ?></a></p>
+        <p>Telefon: <?php echo $profile['phone']; ?></p>
+
+        <?php if ($messageSent): ?>
+            <div class="message-box">
+                <strong>Terima kasih, <?php echo $name; ?>!</strong><br>
+                Mesej anda telah diterima.<br>
+                <em>"<?php echo $message; ?>"</em><br>
+                Kami akan hubungi anda di <strong><?php echo $email; ?></strong> secepat mungkin.
+            </div>
+        <?php else: ?>
+            <form method="POST">
+                <input type="text" name="name" placeholder="Nama Anda" required>
+                <input type="email" name="email" placeholder="Email Anda" required>
+                <textarea name="message" placeholder="Mesej Anda" required></textarea>
+                <button type="submit">Hantar</button>
+            </form>
+        <?php endif; ?>
+    </section>
+
+    <footer>
+        <p>&copy; <?php echo date("Y"); ?> <?php echo $profile['name']; ?>. Semua hak cipta terpelihara.</p>
+    </footer>
+</body>
+</html>
